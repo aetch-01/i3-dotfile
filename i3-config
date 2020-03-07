@@ -1,0 +1,408 @@
+#     /=========================================================\
+#     |	              Mardin i3 config :)                       |
+#     |          https://github.com/mardin-pop                  |
+#     \=========================================================/
+
+set $mod Mod4
+set $terminale kitty
+set $temrinal alacritty
+#set $terminal kitty
+#### Color Value
+set $darkred     #930000
+set $red         #d80202
+set $darkgreen   #066200
+set $green       #0cc100
+set $darkyellow  #b2bd00
+set $yellow      #f0ff00
+set $darkblue    #002572
+set $blue        #0455ff
+set $white       #ffffff
+set $black       #141415
+set $fg #ffffff
+set $bg #000000
+
+####################[ borders ]
+hide_edge_borders none
+new_window pixel 2       
+new_float pixel 2
+bindsym $mod+u border none 
+bindsym $mod+y border pixel 2
+
+####### font
+font pango:DejaVu Sans Mono 8
+
+######## floating modifier
+floating_modifier $mod
+
+#[============================]
+#[=========[ Base ]===========]                      
+bindsym $mod+h focus left
+bindsym $mod+k focus up
+bindsym $mod+j focus down
+bindsym $mod+l focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+j move down 
+bindsym $mod+Shift+l move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+#bindsym $mod+v split v
+#bindsym $mod+h split h
+bindsym $mod+q split toggle
+bindsym $mod+f fullscreen toggle
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+s sticky toggle
+bindsym $mod+a focus parent
+bindsym $mod+Shift+i move scratchpad
+bindsym $mod+i scratchpad show
+bindsym $mod+Home move position center
+#bindsym $mode+m bar mode hide 
+
+#### Xbacklight
+bindsym XF86MonBrightnessUp    exec xbacklight -inc 10
+bindsym XF86MonBrightnessDown  exec xbacklight -dec 10
+
+#### Audio Volume
+bindsym XF86AudioRaiseVolume  exec pactl set-sink-volume 0 +2%
+bindsym XF86AudioLowerVolume  exec pactl set-sink-volume 0 -2%
+bindsym XF86AudioMute         exec pactl set-sink-mute 0 toggle
+exec --no-startup-id "${HOME}/Script/pulse_scrpit.sh"
+
+####### Client colors
+#                       BORDER        BACKGROUND  TEXT      INDICATOR     CHILD_BORDER
+client.focused          $white          $white       $white    $white        $white           
+client.focused_inactive $red          $red        $white    $white        $red
+client.unfocused        $black        $black      $white    $white        $black
+client.urgent           $black        $black      $white    $white        $black
+client.placeholder      $black        $black      $white    $black        $black
+client.background       $black
+
+##### i3 bar
+#bar {
+#      i3bar_command i3bar
+#      status_command i3blocks
+#      font pango: Inconsolata for Powerline, FontAwesome 9 
+#status_command bumblebee-status -m \
+#  spotify cmus traffic layout cpu memory uptime battery time publicip pasink pasource \
+#  -p time.format="%H:%M" \
+# -t gruvbox-powerline
+#      position top
+#      strip_workspace_numbers yes
+#      colors {
+#              #Class                Border   Back   Fore
+#              focused_workspace   #bc0000 #bc0000 #ffffff
+#              active_workspace    #000000 #000000 #ffffff
+#              inactive_workspace  #000000 #000000 #86888c
+#              urgent_workspace    #d64e4e #d64e4e #ffffff
+#      }
+#}
+
+#=================================================]
+##########[ Start and Open Applications ]##########
+
+##### restart,reload,exit from i3
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+c reload
+bindsym $mod+9 exec --no-startup-id betterlockscreen -l
+bindsym $mod+0 exec bash "${HOME}/Script/power-rofi.sh"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You want to exit from i3' -b 'Yes' 'i3-msg exit'"
+
+#### Start Applications
+ # Applications
+bindsym $mod+Return exec $terminale 
+bindsym $mod+Ctrl+Return exec $terminale -e 'tmux'
+bindsym $mod+Shift+Return exec $temrinal
+bindsym $mod+F1 exec subl 
+bindsym $mod+F2 exec brave 
+bindsym $mod+F3 exec pcmanfm
+bindsym $mod+F4 exec spotify
+bindsym $mod+F5 exec galculator
+
+ # Meta Applications
+bindsym $mod+Shift+F1 exec $terminale -e 'vim'
+bindsym $mod+Shift+F3 exec --no-startup-id rofi -show file-browser
+bindsym $mod+Shift+F4 exec $terminale -e 'cmus'
+bindsym $mod+Shift+F6 exec skypeforlinux
+bindsym $mod+Ctrl+m exec pavucontrol
+#bindsym $mod+Ctrl+p exec --no-startup-id zathura "${HOME}/Documents/Book/Linux and Unix/Bash scripting/bash Cookbook 2nd Edition @MegaPack.pdf"
+bindsym $mod+Ctrl+p exec --no-startup-id zathura "${HOME}/Documents/Book/Programming/C Family/C/Deitel/7edit.pdf"
+
+#### XKill
+ # Mouse Pointer is murder
+bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
+ #    Keyboard   is murder
+bindsym $mod+Shift+x exec --no-startup-id "${HOME}/Script/killbill"
+
+#### Dunst 
+ # Restart Dunst
+bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
+
+#### Compton
+ # kill  picom
+bindsym $mod+t exec --no-startup-id pkill picom
+ # start picom
+bindsym $mod+Ctrl+t exec --no-startup-id picom #--config ~/.config/picom.conf
+
+#### Webcam Show
+#bindsym $mod+Shift+j exec mplayer tv:// -tv driver=v4l2:width=280:height=180 -vo xv;focus
+
+#### Rofi
+bindsym $mod+d exec --no-startup-id rofi -show run
+bindsym $mod+z exec --no-startup-id rofi -show drun
+bindsym $mod+Tab exec --no-startup-id rofi -show window
+bindsym $mod+Shift+w exec "${HOME}/Script/wifi-rofi.sh"
+#### Sconsify
+#bindsym XF86AudioPrev exec sconsify -command replay
+#bindsym XF86AudioPlay exec sconsify -command play_pause
+#bindsym XF86AudioNext exec sconsify -command next
+# pause when locking computer with i3lockP
+#bindsym $mod+Shift+p exec "sconsify -command pause"
+
+#### Cmus and Sconsify
+bindsym XF86AudioPrev exec "cmus-remote --prev  || sconsify -command     replay"
+bindsym XF86AudioPlay exec "cmus-remote --pause || sconsify -command play_pause"
+bindsym XF86AudioNext exec "cmus-remote --next  || sconsify -command       next"
+bindsym $mod+Shift+p  exec "cmus-remote --play  || sconsify -command      pause"
+
+#### Screenshot
+#exec_always --no-startup-id flameshot
+bindsym $mod+shift+Print exec "flameshot gui"
+bindsym $mod+Print exec "maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png"
+
+#################### Start up
+
+#### Notify Area
+exec --no-startup-id clipit
+exec --no-startup-id pa-applet
+exec --no-startup-id nm-applet
+#exec --no-startup-id redshift-gtk
+exec --no-startup-id xfce4-power-manager
+exec_always --no-startup-id flameshot
+#exec --no-startup-id kdeconnect-indicator
+
+#### Display Software and panel
+#exec --no-startup-id compton 
+#exec --no-startup-id glava -d
+exec --no-startup-id unclutter
+exec_always --no-startup-id dunst
+exec --no-startup-id i3-battery-popup
+exec_always --no-startup-id killall polybar; polybar top 
+#exec_always --no-startup-id xautolock -time 10 -locker betterlockscreen -l
+exec_always --no-startup-id "picom"
+exec_always --no-startup-id "xautolock -time 15 'betterlockscreen -l dimblur'"
+exec_always --no-startup-id "setxkbmap -model pc105 -layout us,ir -option 'grp:alt_shift_toggle'"
+exec_always --no-startup-id "feh --bg-center /home/void/Downloads/25.jpg" 
+####################[ Workspace ]
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+
+######### navigate workspaces next / previous
+bindsym $mod+Ctrl+Right workspace next
+bindsym $mod+Ctrl+Left workspace prev
+
+########## switch to workspacer
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+
+########## Move focused container to workspace
+bindsym $mod+Ctrl+1 move container to workspace $ws1
+bindsym $mod+Ctrl+2 move container to workspace $ws2
+bindsym $mod+Ctrl+3 move container to workspace $ws3
+bindsym $mod+Ctrl+4 move container to workspace $ws4
+bindsym $mod+Ctrl+5 move container to workspace $ws5
+bindsym $mod+Ctrl+6 move container to workspace $ws6
+bindsym $mod+Ctrl+7 move container to workspace $ws7
+bindsym $mod+Ctrl+8 move container to workspace $ws8
+
+########## Move to workspace with focused container
+bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2; workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3; workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4; workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5; workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6; workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7; workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
+
+####################[ Resize window (you can also use the mouse for that) ]
+bindsym $mod+r mode "resize"
+mode "resize" {
+        bindsym Left resize shrink width 4 px or 4 ppt
+        bindsym Down resize grow height 4 px or 4 ppt
+        bindsym Up resize shrink height 4 px or 4 ppt
+        bindsym Right resize grow width 4 px or 4 ppt
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+####################[ Press $mod+Shift+g to enter the gap mode.]
+gaps inner 12 
+gaps outer 1
+smart_gaps on 
+smart_borders on
+set $mode_gaps Gaps: (o)uter, (i)nner, (h)orizontal, (v)ertical, (t)op, (r)ight, (b)ottom, (l)eft
+set $mode_gaps_outer  Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner  Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_horiz  Horizontal Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_verti  Vertical Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_top    Top Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_right  Right Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_bottom Bottom Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_left   Left Gaps: +|-|0 (local), Shift + +|-|0 (global)
+
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym h      mode "$mode_gaps_horiz"
+        bindsym v      mode "$mode_gaps_verti"
+        bindsym t      mode "$mode_gaps_top"
+        bindsym r      mode "$mode_gaps_right"
+        bindsym b      mode "$mode_gaps_bottom"
+        bindsym l      mode "$mode_gaps_left"
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_horiz" {
+        bindsym plus  gaps horizontal current plus 5
+        bindsym minus gaps horizontal current minus 5
+        bindsym 0     gaps horizontal current set 0
+        bindsym Shift+plus  gaps horizontal all plus 5
+        bindsym Shift+minus gaps horizontal all minus 5
+        bindsym Shift+0     gaps horizontal all set 0
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_verti" {
+        bindsym plus  gaps vertical current plus 5
+        bindsym minus gaps vertical current minus 5
+        bindsym 0     gaps vertical current set 0
+        bindsym Shift+plus  gaps vertical all plus 5
+        bindsym Shift+minus gaps vertical all minus 5
+        bindsym Shift+0     gaps vertical all set 0
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_top" {
+        bindsym plus  gaps top current plus 5
+        bindsym minus gaps top current minus 5
+        bindsym 0     gaps top current set 0
+        bindsym Shift+plus  gaps top all plus 5
+        bindsym Shift+minus gaps top all minus 5
+        bindsym Shift+0     gaps top all set 0
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_right" {
+        bindsym plus  gaps right current plus 5
+        bindsym minus gaps right current minus 5
+        bindsym 0     gaps right current set 0
+        bindsym Shift+plus  gaps right all plus 5
+        bindsym Shift+minus gaps right all minus 5
+        bindsym Shift+0     gaps right all set 0
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_bottom" {
+        bindsym plus  gaps bottom current plus 5
+        bindsym minus gaps bottom current minus 5
+        bindsym 0     gaps bottom current set 0
+        bindsym Shift+plus  gaps bottom all plus 5
+        bindsym Shift+minus gaps bottom all minus 5
+        bindsym Shift+0     gaps bottom all set 0
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_left" {
+        bindsym plus  gaps left current plus 5
+        bindsym minus gaps left current minus 5
+        bindsym 0     gaps left current set 0
+        bindsym Shift+plus  gaps left all plus 5
+        bindsym Shift+minus gaps left all minus 5
+        bindsym Shift+0     gaps left all set 0
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+
+####################[ Open specific applications in floating mode ]
+assign [class="FireFox"] $ws1
+for_window [class=".*"] border pixel 
+for_window [title="Battery Warning"] sticky enable
+for_window [title="alsamixer"] floating enable border pixel 1
+for_window [class="Calamares"] floating enable border normal
+for_window [class="Clipgrab"] floating enable
+for_window [title="File Transfer*"] floating enable
+for_window [class="Galculator"] floating enable border pixel 1
+for_window [class="GParted"] floating enable border normal
+for_window [class="Lxappearance"] floating enable sticky enable border normal
+for_window [title="MuseScore: Play Panel"] floating enable
+for_window [class="Nitrogen"] floating enable sticky enable border normal
+for_window [class="Oblogout"] floating enable
+for_window [class="octopi"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="qt5ct"] floating enable sticky enable border normal
+for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
+for_window [class="Simple-scan"] floating enable border normal
+for_window [class="(?i)virtualbox"] floating enable border normal
+for_window [class="BurpSuite"] floating enable border normal
+for_window [class="ClamTK"] floating enable 
+for_window [urgent=latest] focus
+for_window [title="MPlayer"] floating enable
+for_window [title="MPlayer"] sticky enable
+for_window [class="MPlayer"] move position 410 15
+bindsym $mod+Shift+A exec atom
+bindsym $mod+Shift+T exec telegram-desktop
+bindsym $mod+Shift+B exec qutebrowser
+bindsym $mod+Shift+F exec firefox
