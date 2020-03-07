@@ -1,0 +1,404 @@
+;==========================================================\
+;                            														   |
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗ |
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗|
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝|
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗|
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║|
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝|
+;                                                          |
+;==========================================================/
+[colors]
+background = #0000000000
+background-alt = #282a36
+;foreground = ${xrdb:color7:#222}
+foreground = #ccffffff
+foreground-alt = #f8f8f2
+primary = #b50000
+secondary = #e60053
+alert = #bd2c40
+underline = #b50000
+
+[bar/top]
+monitor = ${env:MONITOR:}
+width = 100%
+height = 16
+offset-x = -50%
+;offset-y = 1%
+radius = 0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+;line-size = 2
+;line-color = #f00
+;border-bottom-size = 0
+;border-bottom-color = #AD3D37
+;border-size = 2
+;border-color = #232423
+
+padding-left = 120 
+padding-right = 120 
+
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = NotoSans-Regular:size=8;-0
+font-1 = MaterialIcons:size=10;0
+font-2 = Termsynu:size=8:antialias=false;-3
+font-3 = FontAwesome:size=10.8;0
+; powermenu mpd eth memory hostname qutebrowser temperature weather filesystem  player-mpris-tail 
+modules-left = battery sep date 
+modules-center = i3   
+modules-right = xkeyboard sep pulseaudio sep cpu
+
+tray-position = right
+tray-padding = 2
+tray-offset-x = 0
+tray-offset-y = 0
+tray-scale = 1.0
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/sep]
+type = custom/text
+content = |
+content-foreground = ${colors.foreground-alt}
+content-padding = 1
+
+[module/hostname]
+type = custom/script
+interval = 256
+format = "<label> "
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-padding = 0
+format-background = ${colors.background}
+exec = echo "$(uname -n)"
+
+[module/weather]
+type = custom/script
+exec = /home/popcorn/Script/weather
+interval = 1800
+;format-underline = #6272a4
+
+[module/qutebrowser]
+type = custom/text
+content = "%{F#fbc958}  %{F-}"
+click-left = qutebrowser &
+
+[module/terminal1]
+type = custem/text
+content = "%{F#fbc958} T %{F-}"
+click-left = kitty &
+
+[module/telegram1]
+type = custem/text
+content = "%{F#fbc958} TG %{F-}"
+click-left = telegram &
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+status_command python /usr/lib/python3.7/site-packages/powerline/bindings/i3/powerline-i3.py
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+;format-prefix-underline = #bc0000 
+
+label-layout = %layout%
+;label-layout-underline = ${colors.secondary}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+;label-indicator-background = #FF0000
+;label-indicator-underline = #bc0000
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /home
+
+label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+pin-workspaces = true
+strip-wsnumbers = true
+index-sort = false 
+;enable-scroll = false
+
+ws-icon-0 =;
+ws-icon-1 =;
+ws-icon-2 =;
+ws-icon-3 =;
+ws-icon-4 =;
+ws-icon-5 =;
+ws-icon-6 =;
+ws-icon-7 =;
+
+label-mode = %mode%
+label-mode-padding = 1 
+label-mode-foreground = #ffffff
+label-mode-background = ${colors.primary}
+label-focused-foreground = #ffffff
+
+;label-focused = %icon%
+label-focused-padding = 1
+;label-focused-underline = #ffffff 
+label-focused-background = ${colors.background}
+
+;label-unfocused = %icon%
+label-unfocused-padding = 1
+;label-unfocused-foreground = #ffffff
+
+label-urgent = %icon%
+label-urgent-padding = 2
+label-urgent-foreground = #FF5555
+
+label-visible = %icon%
+;label-visible-padding = 2
+label-visible-foreground = #ffffff
+
+
+[module/player-mpris-tail]
+type = custom/script
+exec = ~/.config/polybar/player-mpris-tail.py --icon-playing  --icon-paused  --icon-stopped  --icon-none  -f ' {:artist:t15:{artist}:}{:artist:: :}{:t19:{title}:} %{A1:~/.config/polybar/player-mpris-tail.py previous:}  %{A} %{A1:~/.config/polybar/player-mpris-tail.py play-pause:} {icon-reversed} %{A} %{A1:~/.config/polybar/player-mpris-tail.py next:}  %{A}'
+tail = true
+label = %output%
+;format-underline = #50fa7b
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song> <icon-prev> <icon-stop> <toggle> <icon-next>
+
+host = 127.0.0.1
+port = 6600
+
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+
+[module/cpu]
+
+type = internal/cpu
+interval = 1
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+;format-underline =#b50000
+label = %percentage:2%
+
+[module/memory]
+
+type = internal/memory
+interval = 1
+format-prefix = "  "
+;
+format-prefix-foreground = ${colors.foreground-alt}
+;format-underline = ${colors.underline}
+label = %gb_used% / %gb_total%
+;format-underline = #b50000
+
+[module/eth]
+type = internal/network
+interface = wlp2s0
+interval = 3.0
+;format-connected-underline = ${colors.underline}
+label-connected =   %essid% 
+;   %local_ip% |  %downspeed% |  %upspeed%
+label-disconnected-foreground = #66
+format-disconnected =  Not Connected
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/date]
+type = internal/date
+interval = 1
+date = " %m/%d"
+date-alt = 
+time =  %H:%M:%S
+time-alt = %a:%H:%M
+format-prefix = 
+format-prefix-foreground = ${colors.foreground-alt}
+;format-underline = #b50000
+label = %date% %time%
+
+[module/pulseaudio]
+
+type = internal/pulseaudio
+format-volume 150 = <label-volume> <bar-volume>
+label-volume =  %percentage%
+label-volume-foreground = ${root.foreground}
+
+label-muted =  muted
+label-muted-foreground = #666
+sink = alsa_output.usb-Burr-Brown_from_TI_USB_Audio_CODEC-00
+bar-volume-width = 15
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = true
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+;label-volume-underline = #b50000
+
+[module/alsa]
+type = internal/alsa
+
+format-volume = <label-volume> <bar-volume>
+label-volume = VOL
+label-volume-foreground = ${root.foreground}
+
+format-muted-prefix = " "
+format-muted-foreground = ${colors.foreground-alt}
+label-muted = sound muted
+
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 98
+
+format-charging =  <animation-charging> <label-charging>
+;format-charging-underline = ${colors.underline}
+
+format-discharging =  <animation-discharging> <label-discharging>
+;format-discharging-underline = ${self.format-charging-underline}
+
+format-full-prefix = " "
+format-full-prefix-foreground = ${colors.foreground-alt}
+;format-full-underline = ${self.format-charging-underline}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-foreground = ${colors.foreground-alt}
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-framerate = 750
+
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-3 = 
+animation-discharging-4 = 
+animation-discharging-foreground = ${colors.foreground-alt}
+animation-discharging-framerate = 750
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+format = <ramp> <label>
+;format-underline = ${colors.underline}
+format-warn = <ramp> <label-warn>
+;format-warn-underline = ${self.format-underline}
+
+label =  %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.secondary}
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-foreground = ${colors.foreground-alt}
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = 
+label-open-foreground = #f8f8f2
+label-close =  
+label-close-foreground = #ff6d6d
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+;format-underline = #f8f8f2
+
+menu-0-0 = Reboot
+menu-0-0-exec = reboot
+menu-0-1 = Power off
+menu-0-1-exec = poweroff
+menu-0-0-padding = 2
+menu-0-1-padding = 2 
+
+[settings]
+compositing-background = over
+compositing-foreground = over
+compositing-overline = over
+;compositing-underline = over
+compositing-border = over
+screenchange-reload = true
+
+[global/wm]
+margin-top = 3
+margin-bottom = 3
+
+vim:ft=dosini
+
+[module/pavolume]
+type = custom/script
+interval = 2
+label=VOLUME:%output%
+exec = ~/.config/polybar/pavolume.sh
+click-right = exec pavucontrol
+click-left = ~/.config/polybar/pavolume.sh --togmute
+scroll-up = ~/.config/polybar/pavolume.sh --up
+scroll-down = ~/.config/polybar/pavolume.sh --down
+label-padding = 2
+label-foreground = ${colors.white}
+
